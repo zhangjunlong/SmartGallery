@@ -2,78 +2,166 @@
 <html manifest="../../gallery.manifest">
 <head>
 	<meta charset="UTF-8">
-	<title>Smart 图片库</title>
-	<meta name="author" content="Ste Brennan - Code Computerlove - http://www.codecomputerlove.com/" />
+	<title>智能移动图库 | Smart Gallery</title>
+	<meta name="author" content="Zhang Junlong - Smart Interative - http://smartgallery.cloudfoundry.com/" />
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<link href="styles.css" type="text/css" rel="stylesheet" />
 	
+	<link href="../../generic/ui/css/jquery.mobile/jquery.mobile.css" rel="stylesheet" />
+	<link href="jquery-mobile.css" type="text/css" rel="stylesheet" />
 	<link href="../photoswipe.css" type="text/css" rel="stylesheet" />
 	
 	<script type="text/javascript" src="../lib/klass.min.js"></script>
-	<script type="text/javascript" src="../code.photoswipe-3.0.4.min.js"></script>
-	
-	
-	<script type="text/javascript">
-
-		(function(window, PhotoSwipe){
-		
-			document.addEventListener('DOMContentLoaded', function(){
-			
-				var
-					options = {},
-					instance = PhotoSwipe.attach( window.document.querySelectorAll('#Gallery a'), options );
-			
-			}, false);
-			
-			
-		}(window, window.Code.PhotoSwipe));
+	<script type="text/javascript" src="../../generic/js/jquery.js"></script>
+	<script type="text/javascript" src="../../generic/js/si.gallery.js"></script>
+	<script type="text/javascript" src="../../generic/ui/js/jquery.mobile.js"></script>
+	<script type="text/javascript" src="../code.photoswipe.jquery-3.0.4.min.js"></script>	
+	<script type="text/javascript">		
+		/*
+		 * IMPORTANT!!!
+		 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
+		 * If you don't this will mess with how jQuery Mobile works
+		 */
+		(function(window, $, PhotoSwipe){
+			$(document).ready(function(){
+				si.gallery.load();			
+				$('div.gallery-page')
+					.live('pageshow', function(e){						
+						var currentPage = $(e.target),
+							options = {},
+							photoSwipeInstance = $("ul.gallery a", e.target).photoSwipe(options,  currentPage.attr('id'));							
+						return true;						
+					}).live('pagehide', function(e){
+						
+					var currentPage = $(e.target),
+						photoSwipeInstance = PhotoSwipe.getInstance(currentPage.attr('id'));
+						if (typeof photoSwipeInstance != "undefined" && photoSwipeInstance != null) {
+							PhotoSwipe.detatch(photoSwipeInstance);
+						}
+						return true;						
+					});		
+			});		
+		}(window, window.jQuery, window.Code.PhotoSwipe));
 		
 	</script>
 	
 </head>
 <body>
-<!-- 
-<div id="Header">
-	<a href="http://www.codecomputerlove.com"><img src="../../gallery/codecomputerlovelogo.gif" width="230" height="48" alt="Code Computerlove" /></a>
-</div>
- -->
-<div id="MainContent">
-
-	<div class="page-content">
-		<h1>Smart Interative&trade; 图片库</h1>
+<div data-role="page" id="Home">
+	<div data-role="header">
+		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
+	</div>	
+	<div data-role="content" >			
+		<p>请选择图库:</p>				
+		<ul data-role="listview" data-inset="true">
+			<li>
+				<a href="#Gallery1">
+					<img id="springThumb" src="../../generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>春季图库</h3>
+					<p>春季系列目录 | Spring Category</p>
+				</a>
+				<span id="springCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery2">
+					<img id="summerThumb" src="../../generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>夏季图库</h3>
+					<p>夏季系列目录 | Summer Category</p>
+				</a>
+				<span id="summerCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery3">
+					<img id="autumnThumb" src="../../generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>秋季目录</h3>
+					<p>秋季系列目录 | Autumn Category</p>
+				</a>
+				<span id="autumnCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery4">
+					<img id="winterThumb" src="../../generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>冬季目录</h3>
+					<p>冬季系列目录 | Winter Category</p>
+				</a>
+				<span id="winterCnt" class="ui-li-count">0</span>
+			</li>
+		</ul> 		
+		<p>您也可以浏览总图库:</p>		
+		<ul data-role="listview" data-inset="true">
+			<li>
+				<a href="#GalleryAll">全部图片</a>
+				<span id="allCnt" class="ui-li-count">0</span>
+			</li> 
+		</ul> 		
 	</div>
-	
-	<ul id="Gallery" class="gallery">		
-		<li><a href="../../gallery/full/001.jpg"><img src="../../gallery/thumb/001.jpg" alt="Image 001" /></a></li>
-		<li><a href="../../gallery/full/002.jpg"><img src="../../gallery/thumb/002.jpg" alt="Image 002" /></a></li>
-		<li><a href="../../gallery/full/003.jpg"><img src="../../gallery/thumb/003.jpg" alt="Image 003" /></a></li>
-		<li><a href="../../gallery/full/004.jpg"><img src="../../gallery/thumb/004.jpg" alt="Image 004" /></a></li>
-		<li><a href="../../gallery/full/005.jpg"><img src="../../gallery/thumb/005.jpg" alt="Image 005" /></a></li>
-		<li><a href="../../gallery/full/006.jpg"><img src="../../gallery/thumb/006.jpg" alt="Image 006" /></a></li>
-		<li><a href="../../gallery/full/007.jpg"><img src="../../gallery/thumb/007.jpg" alt="Image 007" /></a></li>
-		<li><a href="../../gallery/full/008.jpg"><img src="../../gallery/thumb/008.jpg" alt="Image 008" /></a></li>
-		<li><a href="../../gallery/full/009.jpg"><img src="../../gallery/thumb/009.jpg" alt="Image 009" /></a></li>
-		<li><a href="../../gallery/full/010.jpg"><img src="../../gallery/thumb/010.jpg" alt="Image 010" /></a></li>
-		<li><a href="../../gallery/full/011.jpg"><img src="../../gallery/thumb/011.jpg" alt="Image 011" /></a></li>
-		<li><a href="../../gallery/full/012.jpg"><img src="../../gallery/thumb/012.jpg" alt="Image 012" /></a></li>
-		<li><a href="../../gallery/full/013.jpg"><img src="../../gallery/thumb/013.jpg" alt="Image 013" /></a></li>
-		<li><a href="../../gallery/full/014.jpg"><img src="../../gallery/thumb/014.jpg" alt="Image 014" /></a></li>
-		<li><a href="../../gallery/full/015.jpg"><img src="../../gallery/thumb/015.jpg" alt="Image 015" /></a></li>
-		<li><a href="../../gallery/full/016.jpg"><img src="../../gallery/thumb/016.jpg" alt="Image 016" /></a></li>
-		<li><a href="../../gallery/full/017.jpg"><img src="../../gallery/thumb/017.jpg" alt="Image 017" /></a></li>
-		<li><a href="../../gallery/full/018.jpg"><img src="../../gallery/thumb/018.jpg" alt="Image 018" /></a></li>		
-	</ul>	
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interactive&trade;</h4>
+	</div>
 </div>
-	
-<div id="Footer">
-	<p><small>&copy; 2012 Smart Interative&trade;</small></p>
-
-	<div id="SocialLinks">
-		<a href="http://blog.codecomputerlove.com/"><img src="../../gallery/blogicon.png" width="32" height="32" alt="Blog" /></a>
-		<a href="http://www.twitter.com/zhangjunlong"><img src="../../gallery/twittericon.png" width="32" height="32" alt="Twitter" /></a>
-		<a href="http://www.facebook.com/zhangjunlong"><img src="../../gallery/facebookicon.png" width="32" height="32" alt="Facebook" /></a>
-		<a href="http://www.flickr.com/photos/codecomputerlove"><img src="../../gallery/flickricon.png" width="32" height="32" alt="Flickr" /></a>
+<div data-role="page" id="Gallery1" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>春季图库 ｜ Spring Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="spring" class="gallery">		
+						
+		</ul>		
+	</div>	
+	<div data-role="footer">
+		<h4>&copy; 2011 Code Computerlove</h4>
+	</div>	
+</div>
+<div data-role="page" id="Gallery2" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>夏季图库 ｜ Summer Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="summer" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="Gallery3" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>秋季图库 ｜ Autumn Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="autumn" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="Gallery4" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>冬季图库 ｜ Winter Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="winter" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="GalleryAll" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>总图库 ｜ Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="all" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
 	</div>
 </div>
 </body>
