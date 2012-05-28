@@ -1,6 +1,8 @@
 CACHE MANIFEST
 CACHE:
 gallery/autumn/list.properties
+gallery/autumn/107-108-109.jpg
+gallery/autumn/121-122-123.jpg
 gallery/layout.properties
 gallery/spring/013-014.jpg
 gallery/spring/03-04.jpg
@@ -10,7 +12,9 @@ gallery/spring/128-129.jpg
 gallery/spring/43.jpg
 gallery/spring/list.properties
 gallery/summer/list.properties
+gallery/summer/43.jpg
 gallery/winter/list.properties
+gallery/winter/128-129.jpg
 generic/images/blogicon.png
 generic/images/facebookicon.png
 generic/images/flickricon.png
@@ -118,11 +122,11 @@ PhotoSwipe/photoswipe.css
 index.html
 
 NETWORK:
-*
+＃*
 
 FALLBACK:
 #/ /offline.html
 
 ##Smart Interactive Microsystems
 ##Smart Gallery
-##version 2.0beta
+##version 2.1beta
