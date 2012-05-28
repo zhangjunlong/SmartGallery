@@ -1,0 +1,55 @@
+CACHE MANIFEST
+CACHE:
+##大图
+gallery/full/001.jpg
+gallery/full/002.jpg
+gallery/full/003.jpg
+gallery/full/004.jpg
+gallery/full/005.jpg
+gallery/full/006.jpg
+gallery/full/007.jpg
+gallery/full/008.jpg
+gallery/full/009.jpg
+gallery/full/010.jpg
+gallery/full/011.jpg
+gallery/full/012.jpg
+gallery/full/013.jpg
+gallery/full/014.jpg
+gallery/full/015.jpg
+gallery/full/016.jpg
+gallery/full/017.jpg
+gallery/full/018.jpg
+gallery/full/019.jpg
+gallery/full/020.jpg
+
+##预览图
+gallery/thumb/001.jpg
+gallery/thumb/002.jpg
+gallery/thumb/003.jpg
+gallery/thumb/004.jpg
+gallery/thumb/005.jpg
+gallery/thumb/006.jpg
+gallery/thumb/007.jpg
+gallery/thumb/008.jpg
+gallery/thumb/009.jpg
+gallery/thumb/010.jpg
+gallery/thumb/011.jpg
+gallery/thumb/012.jpg
+gallery/thumb/013.jpg
+gallery/thumb/014.jpg
+gallery/thumb/015.jpg
+gallery/thumb/016.jpg
+gallery/thumb/017.jpg
+gallery/thumb/018.jpg
+gallery/thumb/019.jpg
+gallery/thumb/020.jpg
+
+NETWORK:
+*
+
+FALLBACK:
+#/ /offline.html
+
+##Smart Interactive Microsystems
+##Smart Gallery
+##version 1.0
