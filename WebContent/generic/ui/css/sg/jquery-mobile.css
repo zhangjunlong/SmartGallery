@@ -7,4 +7,4 @@
 
 .video li { float: center; width: 100%; text-align:center}
 .video li a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
-.video li img { display: block; width: 100%; height: auto; text-align:center }
+.video li video { display: block; width: 100%; height: auto; text-align:center }
