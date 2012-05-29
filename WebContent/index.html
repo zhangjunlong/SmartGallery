@@ -1,13 +1,185 @@
 <!DOCTYPE html>
-<html manifest="gallery.manifest">
+<html>
 <head>
 	<meta charset="UTF-8">
-	<title>Smart Gallery&trade; | 图片库</title>
-	<script type="text/javascript">
-		window.location='PhotoSwipe/examples/';
+	<title>灵动&trade;智能移动图库 | Smart Gallery&trade;</title>
+	<meta name="author" content="Zhang Junlong - Smart Interative - http://smartgallery.cloudfoundry.com/" />
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	
+	<link href="generic/ui/css/jquery.mobile/jquery.mobile.css" rel="stylesheet" />
+	<link href="generic/ui/css/sg/jquery-mobile.css" type="text/css" rel="stylesheet" />
+	<link href="PhotoSwipe/photoswipe.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript" src="PhotoSwipe/lib/klass.min.js"></script>
+	<script type="text/javascript" src="generic/js/jquery.js"></script>
+	<script type="text/javascript" src="generic/js/si.gallery.js"></script>
+	<script type="text/javascript" src="generic/ui/js/jquery.mobile.js"></script>
+	<script type="text/javascript" src="PhotoSwipe/code.photoswipe.jquery-3.0.4.min.js"></script>	
+	<script type="text/javascript">		
+		/*
+		 * IMPORTANT!!!
+		 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
+		 * If you don't this will mess with how jQuery Mobile works
+		 */
+		(function(window, $, PhotoSwipe){
+			$(document).ready(function(){
+				si.gallery.load();			
+				$('div.gallery-page')
+					.live('pageshow', function(e){						
+						var currentPage = $(e.target),
+							options = {},
+							photoSwipeInstance = $("ul.gallery a", e.target).photoSwipe(options,  currentPage.attr('id'));							
+						return true;						
+					}).live('pagehide', function(e){
+						
+					var currentPage = $(e.target),
+						photoSwipeInstance = PhotoSwipe.getInstance(currentPage.attr('id'));
+						if (typeof photoSwipeInstance != "undefined" && photoSwipeInstance != null) {
+							PhotoSwipe.detatch(photoSwipeInstance);
+						}
+						return true;						
+					});
+			});		
+		}(window, window.jQuery, window.Code.PhotoSwipe));
+		
 	</script>
+	
 </head>
 <body>
-欢迎使用Smart Gallery&trade; 多媒体浏览程序
+<div data-role="page" id="Home">
+	<div data-role="header">
+		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
+	</div>	
+	<div data-role="content" >			
+		<p>请选择图库:</p>				
+		<ul data-role="listview" data-inset="true">
+			<li>
+				<a href="#Gallery1" data-transition="slidefade">
+					<img id="springThumb" src="generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>春季图库</h3>
+					<p>春季系列目录 | Spring Category</p>
+				</a>
+				<span id="springCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery2" data-transition="slidefade">
+					<img id="summerThumb" src="generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>夏季图库</h3>
+					<p>夏季系列目录 | Summer Category</p>
+				</a>
+				<span id="summerCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery3" data-transition="slidefade">
+					<img id="autumnThumb" src="generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>秋季目录</h3>
+					<p>秋季系列目录 | Autumn Category</p>
+				</a>
+				<span id="autumnCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#Gallery4" data-transition="slidefade">
+					<img id="winterThumb" src="generic/images/no_image.gif" class="ui-li-thumb">
+					<h3>冬季目录</h3>
+					<p>冬季系列目录 | Winter Category</p>
+				</a>
+				<span id="winterCnt" class="ui-li-count">0</span>
+			</li>
+		</ul> 		
+		<p>您也可以浏览总图库:</p>		
+		<ul data-role="listview" data-inset="true">
+			<li>
+				<a href="#GalleryAll" data-transition="slidefade">总图片 | Photo Gallery</a>
+				<span id="allCnt" class="ui-li-count">0</span>
+			</li>
+			<li>
+				<a href="#GalleryVideo" data-transition="slidefade">视频库 | Video Library</a>
+				<span id="videoCnt" class="ui-li-count">0</span>
+			</li> 
+		</ul> 		
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interactive&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="Gallery1" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>春季图库 ｜ Spring Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="spring" class="gallery">		
+						
+		</ul>		
+	</div>	
+	<div data-role="footer">
+		<h4>&copy; 2011 Code Computerlove</h4>
+	</div>	
+</div>
+<div data-role="page" id="Gallery2" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>夏季图库 ｜ Summer Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="summer" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="Gallery3" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>秋季图库 ｜ Autumn Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="autumn" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="Gallery4" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>冬季图库 ｜ Winter Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="winter" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="GalleryAll" data-add-back-btn="true" data-back-btn-text="返回" class="gallery-page">
+	<div data-role="header">
+		<h1>总图库 ｜ Gallery</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="all" class="gallery">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
+<div data-role="page" id="GalleryVideo" data-add-back-btn="true" data-back-btn-text="返回" class="video-page">
+	<div data-role="header">
+		<h1>视频库 ｜ Video Library</h1>
+	</div>
+	<div data-role="content">			
+		<ul id="video" class="video">		
+			
+		</ul>	
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 Smart Interative&trade;</h4>
+	</div>
+</div>
 </body>
 </html>
