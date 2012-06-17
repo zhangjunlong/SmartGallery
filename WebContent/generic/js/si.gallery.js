@@ -20,49 +20,18 @@ SIGallery.prototype.load = function() {
 		layout = layout.replace(/\r/g, '|').replace(/\n/g, '|').replace(
 				/\|\|/g, '|');
 		var subGalleries = layout.split('|');
-		var ttCnt = 0;
-		var tvCnt = 0;
+		si.gallery.createAlbums(subGalleries);
+		
 		$('#all').html();
 		$.each(subGalleries, function(i, gallery) {
-			if ('' != $.trim(gallery) && '#' != $.trim(gallery).charAt(0)) {
+			if ('' != $.trim(gallery[0]) && '#' != $.trim(gallery[0]).charAt(0)) {
 				$.mobile.showPageLoadingMsg();
-				$.get(si.gallery.home + gallery + '/list.properties', function(
+				gallery=gallery.split(':');
+				$.get(si.gallery.home + gallery[0] + '/list.properties', function(
 						list) {
-					$('#' + gallery).html();
-					var cnt = 0;
-					list = list.replace(/\r/g, '|').replace(/\n/g, '|')
-							.replace(/\|\|/g, '|');
-					$.each(list.split('|'), function(i, line) {
-						line = $.trim(line);
-						if ('' != line && '#' != line.charAt(0)) {
-							var url = si.gallery.home + gallery + '/' + line;
-							var suffix = line.substring(line.length - 3,
-									line.length);
-							if (suffix == 'm4v' || suffix == 'mp4') {
-								var vhtml = '<li><a href="' + url
-										+ '" rel="external"><video src="' + url
-										+ '" alt="' + line
-										+ '" controls="controls" preload="metadata">您的浏览器可能不支持该视频</video></a></li>';
-								$('#' + gallery).append(vhtml);
-								$('#' + gallery + 'Cnt').html(++cnt);
-							} else {
-								var html = '<li><a href="' + url
-										+ '" rel="external"><img src="' + url
-										+ '" alt="' + line + '" /></a></li>';
-								$('#' + gallery).append(html);
-								$('#' + gallery + 'Cnt').html(++cnt);
-								if (1 == i) {
-									var thumb = si.gallery.home + gallery + '/'
-											+ $.trim(line);
-									$('#' + gallery + 'Thumb').attr('src',
-											thumb);
-								}
-								$('#all').append(html);
-								$('#allCnt').html(++ttCnt);
-							}
-						}
-					});
-
+					//$('#' + gallery).html();
+					si.gallery.createAlbumPage(gallery,list);
+					
 					$.mobile.hidePageLoadingMsg();
 				});
 			}
@@ -72,3 +41,104 @@ SIGallery.prototype.load = function() {
 		async : true
 	});
 };
+/**
+ * Create gallery albums on page according to layout file
+ * @param albumsArray
+ */
+SIGallery.prototype.createAlbums = function(albumsArray) {
+	var gTemplate = $('#gTemplate').html();
+	var pTemplate=$('#pTemplate').html();
+	
+	$.each(albumsArray, function(i, album) {
+		if ('' != $.trim(album) && '#' != $.trim(album).charAt(0)) {
+			album = album.split(':');
+			var id = album[0];
+			var name = u2str(album[1]);
+			var type = album[2];
+			var gAlbum = gTemplate.replace(/{id}/g, id);
+			$('#albums').append(gAlbum);
+			$('#'+id+'Name').html(name);
+			
+			var gPage=pTemplate.replace(/{id}/g, id).replace(/{type}/g, type);
+			$('body').append(gPage);
+			$('#'+id+'Title').html(name);
+			
+		}
+	});
+};
+
+SIGallery.prototype.createAlbumPage=function (album,list) {
+	var albumId=album[0];
+	var albumType=album[2].toLowerCase();
+	
+	list = list.replace(/\r/g, '|').replace(/\n/g, '|')
+			.replace(/\|\|/g, '|');
+	// Format List view according to album's type
+	if ('gallery' != albumType.toLowerCase()) {
+		$('#'+albumId+'List').attr('data-role','listview');
+	}
+	
+	$.each(list.split('|'), function(i, line) {
+		line = $.trim(line);
+		if ('' != line && '#' != line.charAt(0)) {
+			var url = si.gallery.home + albumId + '/' + line;
+			var suffix = line.substring(line.length - 3,
+					line.length);
+			var tag='';
+			
+			if (suffix == 'm4v' || suffix == 'mp4') {
+				tag = '<video src="' + url
+						+ '" alt="' + line
+						+ '" preload="metadata" loop="loop"/>';
+			} else if(suffix=='txt' || suffix=='htm' || suffix=='tml'){
+				$.get(url, function(txt) {
+					tag = '<div>' + txt + '</div>';
+				});
+			} else {
+				tag = '<img src="' + url + '" alt="' + line + '" />';
+			}
+			
+			var html='<li><a href="{href}" {data-rel} {events}">'+tag+'</a></li>';
+			if('gallery'==albumType) {
+				var href=url;
+				html=html.replace(/{data-rel}/g, 'rel="external"').replace(/{href}/g, href);
+				html=html.replace(/{events}/g, '');
+			}else{
+				var href='#viewer';
+				html=html.replace(/{data-rel}/g, '').replace(/{href}/g, href);
+				html=html.replace(/{events}/g, 'onclick="showContent(this);"');
+			}
+			$('#' + albumId+'List').append(html);
+			
+			if (1 == i) {
+				if('videos'==albumType) {
+					$('#' + albumId + 'Thumb').attr('src',
+							'generic/images/vlib.jpg');
+				}else if('news'==albumType){
+					$('#' + albumId + 'Thumb').attr('src',
+							'generic/images/news.jpg');
+				} else {
+					var thumb = si.gallery.home + albumId + '/'
+					+ $.trim(line);
+					$('#' + albumId + 'Thumb').attr('src',
+					thumb);
+				}
+			}
+		}
+	});
+};
+
+/**
+ * transform text in utf8 format to string
+ * @param text
+ * @returns
+ */
+function u2str(text){
+    return decodeURI(unescape((text.replace(/\\/g,'%').replace(/;/g,''))));
+}
+
+function showContent(obj) {
+	$('#viewerContent').html($(obj).html());
+	$('#viewerContent img').attr('class','');
+	$('#viewerContent video').attr('controls','controls');
+}

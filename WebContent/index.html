@@ -9,14 +9,14 @@
 	
 	<link href="generic/ui/css/jquery.mobile/jquery.mobile.css" rel="stylesheet" />
 	<link href="PhotoSwipe/photoswipe.css" type="text/css" rel="stylesheet" />
-	<link href="generic/ui/css/sg/jquery-mobile.css" type="text/css" rel="stylesheet" />
+	<link href="generic/ui/css/sg/sg-mobile.css" type="text/css" rel="stylesheet" />
 	
 	<script type="text/javascript" src="PhotoSwipe/lib/klass.min.js"></script>
 	<script type="text/javascript" src="generic/js/jquery.js"></script>
 	<script type="text/javascript" src="generic/js/si.gallery.js"></script>
 	<script type="text/javascript" src="generic/ui/js/jquery.mobile.js"></script>
 	<script type="text/javascript" src="PhotoSwipe/code.photoswipe.jquery-3.0.4.min.js"></script>	
-	<script type="text/javascript">		
+	<script type="text/javascript">
 		/*
 		 * IMPORTANT!!!
 		 * REMEMBER TO ADD  rel="external"  to your anchor tags. 
@@ -28,7 +28,18 @@
 				$('div.gallery-page')
 					.live('pageshow', function(e){						
 						var currentPage = $(e.target),
-							options = {autoStartSlideshow:true	},
+							options = {
+								autoStartSlideshow:true,
+								captionAndToolbarFlipPosition:true,
+								getToolbar:function(){
+									return '<div class="' + PhotoSwipe.Toolbar.CssClasses.close + '"><div class="' + PhotoSwipe.Toolbar.CssClasses.toolbarContent + '"></div>返回</div><div class="' + PhotoSwipe.Toolbar.CssClasses.play + '"><div class="' + PhotoSwipe.Toolbar.CssClasses.toolbarContent + '"></div>播放</div><div class="' + PhotoSwipe.Toolbar.CssClasses.previous + '"><div class="' + PhotoSwipe.Toolbar.CssClasses.toolbarContent + '"></div>上一张</div><div class="' + PhotoSwipe.Toolbar.CssClasses.next + '"><div class="' + PhotoSwipe.Toolbar.CssClasses.toolbarContent + '"></div>下一张</div>';
+								},
+								getImageCaption:function(refObj){
+									if("VIDEO"==refObj.firstChild.tagName){
+										return '<div id="vplayer" onclick="vplayCtl();">播放></div>';
+									}
+								}
+							},
 							photoSwipeInstance = $("ul.gallery a", e.target).photoSwipe(options,  currentPage.attr('id'));							
 						return true;						
 					}).live('pagehide', function(e){
@@ -43,134 +54,73 @@
 			});		
 		}(window, window.jQuery, window.Code.PhotoSwipe));
 		
+		function vplayCtl() {
+			var vplayer=document.getElementById('cVideo');
+			
+			if (vplayer.paused){
+				vplayer.play();
+				$('#vplayer').html('暂停||');
+			}else{
+				vplayer.pause();
+				$('#vplayer').html('播放>');
+			}
+		}
 	</script>
-	
 </head>
 <body>
 <div data-role="page" id="Home">
-	<div data-role="header">
+	<div data-role="header" data-position="fixed">
 		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
 	</div>	
 	<div data-role="content" >
-		<div class="albums">
-			<div class="album">
-				<a href="#Gallery1" data-transition="fade">
-					<img id="springThumb" src="generic/images/no_image.gif">
-					<h3>新品上市</h3>
-				</a>
-			</div>
-			<div>
-				<a href="#Gallery2" data-transition="fade">
-					<img id="summerThumb" src="generic/images/no_image.gif">
-					<h3>精品回顾</h3>
-				</a>
-			</div>
-			<div>
-				<a href="#Gallery3" data-transition="fade">
-					<img id="autumnThumb" src="generic/images/no_image.gif">
-					<h3>走秀视频</h3>
-				</a>
-			</div>
-			<div>
-				<a href="#Gallery4" data-transition="fade">
-					<img id="winterThumb" src="generic/images/no_image.gif">
-					<h3>最新动态</h3>
+		<div id="albums" class="albums">
+			<div id="gTemplate">
+				<a href="#{id}Page" data-transition="fade">
+					<div class="album">
+						<img id="{id}Thumb" src="generic/images/no_image.gif">
+						<h3 id="{id}Name">新品上市</h3>
+					</div>
 				</a>
 			</div>
 		</div> 		
-		<p>您也可以浏览总图库:</p>		
-		<ul data-role="listview" data-inset="true">
-			<li>
-				<a href="#GalleryAll" data-transition="slidefade">总图片 | Photo Gallery</a>
-				<span id="allCnt" class="ui-li-count">0</span>
-			</li>
-			<li>
-				<a href="#GalleryVideo" data-transition="slidefade">视频库 | Video Library</a>
-				<span id="videoCnt" class="ui-li-count">0</span>
-			</li> 
-		</ul> 		
+		<hr/>
 	</div>
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 2012 DGVI</h4>
 	</div>
 </div>
-<div data-role="page" id="Gallery1" data-add-back-btn="true" data-back-btn-text="返 回" class="gallery-page">
-	<div data-role="header">
-		<h1>春季图库 ｜ Spring Gallery</h1>
-	</div>
-	<div data-role="content">			
-		<ul id="spring" class="gallery">		
-						
-		</ul>		
-	</div>	
-	<div data-role="footer">
-		<h4>&copy; 2011 Code Computerlove</h4>
-	</div>	
-</div>
-<div data-role="page" id="Gallery2" data-add-back-btn="true" data-back-btn-text="返 回" class="gallery-page">
-	<div data-role="header">
-		<h1>夏季图库 ｜ Summer Gallery</h1>
-	</div>
-	<div data-role="content">			
-		<ul id="summer" class="gallery">		
-			
-		</ul>	
-	</div>
-	<div data-role="footer">
-		<h4>&copy; 2012 DGVI</h4>
+<div id="pTemplate">
+	<div data-role="page" id="{id}Page" data-add-back-btn="false" data-back-btn-text="返 回" class="{type}-page">
+		<div data-role="header" data-position="fixed">
+			<div class="sg-toolbar sg-toolbar-top">
+				<div class="sg-toolbar-close" onclick="history.back();"><div class="sg-toolbar-content"></div>返回</div>
+			</div>
+			<h1 id="{id}Title">图库 ｜ Gallery</h1>
+		</div>
+		<div data-role="content">
+			<ul id="{id}List" class="{type}">		
+				
+			</ul>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<h4>&copy; 2012 DGVI</h4>
+		</div>
 	</div>
 </div>
-<div data-role="page" id="Gallery3" data-add-back-btn="true" data-back-btn-text="返 回" class="gallery-page">
-	<div data-role="header">
-		<h1>秋季图库 ｜ Autumn Gallery</h1>
+<div id="viewer" data-role="page">
+	<div data-role="header" data-position="fixed">
+		<div class="sg-toolbar sg-toolbar-top">
+				<div class="sg-toolbar-close" onclick="history.back();"><div class="sg-toolbar-content"></div>返回</div>
+		</div>
+		<h1 class=""></h1>
 	</div>
-	<div data-role="content">			
-		<ul id="autumn" class="gallery">		
-			
-		</ul>	
+	<div data-role="content" style="text-align:center;">
+		<pre id="viewerContent" style="display:inline-block;text-align:left;">
+		</pre>
 	</div>
-	<div data-role="footer">
-		<h4>&copy; 2012 DGVI</h4>
-	</div>
-</div>
-<div data-role="page" id="Gallery4" data-add-back-btn="true" data-back-btn-text="返 回" class="gallery-page">
-	<div data-role="header">
-		<h1>冬季图库 ｜ Winter Gallery</h1>
-	</div>
-	<div data-role="content">			
-		<ul id="winter" class="gallery">		
-			
-		</ul>	
-	</div>
-	<div data-role="footer">
-		<h4>&copy; 2012 DGVI</h4>
-	</div>
-</div>
-<div data-role="page" id="GalleryAll" data-add-back-btn="true" data-back-btn-text="返 回" class="gallery-page">
-	<div data-role="header">
-		<h1>总图库 ｜ Gallery</h1>
-	</div>
-	<div data-role="content">			
-		<ul id="all" class="gallery">		
-			
-		</ul>	
-	</div>
-	<div data-role="footer">
-		<h4>&copy; 2012 DGVI</h4>
-	</div>
-</div>
-<div data-role="page" id="GalleryVideo" data-add-back-btn="true" data-back-btn-text="返 回" class="video-page">
-	<div data-role="header">
-		<h1>视频库 ｜ Video Library</h1>
-	</div>
-	<div data-role="content">			
-		<ul id="video" class="video">		
-			
-		</ul>	
-	</div>
-	<div data-role="footer">
-		<h4>&copy; 2012 DGVI</h4>
-	</div>
+	<div data-role="footer" data-position="fixed">
+			<h4>&copy; 2012 DGVI</h4>
+		</div>
 </div>
 </body>
 </html>
