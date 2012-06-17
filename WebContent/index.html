@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="generic/js/jquery.js"></script>
 	<script type="text/javascript" src="generic/js/si.gallery.js"></script>
 	<script type="text/javascript" src="generic/ui/js/jquery.mobile.js"></script>
+	<script type="text/javascript" src="generic/js/Native_FullScreen.js"></script>
 	<script type="text/javascript" src="PhotoSwipe/code.photoswipe.jquery-3.0.4.min.js"></script>	
 	<script type="text/javascript">
 		/*
@@ -24,6 +25,7 @@
 		 */	
 		(function(window, $, PhotoSwipe){
 			$(document).ready(function(){
+				window.fullScreenApi.requestFullScreen(document.getElementsByTagName('body')[0]);
 				si.gallery.load();	
 				$('div.gallery-page')
 					.live('pageshow', function(e){						
@@ -65,14 +67,28 @@
 				$('#vplayer').html('播放>');
 			}
 		}
+		
+		function toggleScreenMode() {
+			var fullScreenEl=document.getElementsByTagName('body')[0];
+			if(document.webkitIsFullScreen) {
+				window.fullScreenApi.cancelFullScreen();
+				//document.webkitCancelFullScreen(); 
+				$('#screenModeBtn').html('全屏');
+			} else {
+				window.fullScreenApi.requestFullScreen(fullScreenEl);
+				$('#screenModeBtn').html('退出全屏');
+			}
+		}
 	</script>
 </head>
 <body>
 <div data-role="page" id="Home">
-	<div data-role="header" data-position="fixed">
+	<div data-role="header" data-position="fixed" data-fullscreen="true">
 		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
+		<!-- <a id="screenModeBtn" href="javascript: toggleScreenMode();" data-icon="check" data-theme="b">全屏</a> -->
 	</div>	
 	<div data-role="content" >
+		<hr/>
 		<div id="albums" class="albums">
 			<div id="gTemplate">
 				<a href="#{id}Page" data-transition="fade">
@@ -85,13 +101,13 @@
 		</div> 		
 		<hr/>
 	</div>
-	<div data-role="footer" data-position="fixed">
+	<div data-role="footer" data-position="fixed" data-fullscreen="true">
 		<h4>&copy; 2012 DGVI</h4>
 	</div>
 </div>
 <div id="pTemplate">
 	<div data-role="page" id="{id}Page" data-add-back-btn="false" data-back-btn-text="返 回" class="{type}-page">
-		<div data-role="header" data-position="fixed">
+		<div data-role="header" data-position="fixed" data-fullscreen="true">
 			<div class="sg-toolbar sg-toolbar-top">
 				<div class="sg-toolbar-close" onclick="history.back();"><div class="sg-toolbar-content"></div>返回</div>
 			</div>
@@ -102,13 +118,13 @@
 				
 			</ul>
 		</div>
-		<div data-role="footer" data-position="fixed">
+		<div data-role="footer" data-position="fixed" data-fullscreen="true">
 			<h4>&copy; 2012 DGVI</h4>
 		</div>
 	</div>
 </div>
 <div id="viewer" data-role="page">
-	<div data-role="header" data-position="fixed">
+	<div data-role="header" data-position="fixed" data-fullscreen="true">
 		<div class="sg-toolbar sg-toolbar-top">
 				<div class="sg-toolbar-close" onclick="history.back();"><div class="sg-toolbar-content"></div>返回</div>
 		</div>
@@ -118,7 +134,7 @@
 		<pre id="viewerContent" style="display:inline-block;text-align:left;">
 		</pre>
 	</div>
-	<div data-role="footer" data-position="fixed">
+	<div data-role="footer" data-position="fixed" data-fullscreen="true">
 			<h4>&copy; 2012 DGVI</h4>
 		</div>
 </div>
