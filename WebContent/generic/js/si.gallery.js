@@ -97,7 +97,7 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 			if (suffix == 'm4v' || suffix == 'mp4') {
 				tag = '<video src="' + url
 						+ '" alt="' + line
-						+ '" preload="metadata" loop="loop" poster="'+url+'.png"/>';
+						+ '" poster="'+url+'.png"/>';
 			} else if(suffix=='txt' || suffix=='htm' || suffix=='tml'){
 				$.get(url, function(txt) {
 					tag = '<div>' + txt + '</div>';
