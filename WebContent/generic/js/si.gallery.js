@@ -126,6 +126,7 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 				if('videos'==albumType) {
 					$('#' + albumId + 'Thumb').attr('src',
 							'generic/images/vlib.jpg');
+					_V_(albumId+'VideoPlayer').src(url);
 				}else if('news'==albumType){
 					$('#' + albumId + 'Thumb').attr('src',
 							'generic/images/news.jpg');
