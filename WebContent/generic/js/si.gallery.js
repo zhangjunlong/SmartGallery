@@ -74,8 +74,16 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 	list = list.replace(/\r/g, '|').replace(/\n/g, '|')
 			.replace(/\|\|/g, '|');
 	// Format List view according to album's type
-	if ('gallery' != albumType.toLowerCase()) {
+	if ('news' == albumType) {
 		$('#'+albumId+'List').attr('data-role','listview');
+	} else if ('videos' == albumType) {
+		if(!$.isEmptyObject($('#videoPlayer'))) {
+			var vpHtml=$('#videoPlayerTemplate').html().replace(/{vpTemplateId}/g,albumId+'VideoPlayer');
+			$('#'+albumId+'List').before(vpHtml);
+			_V_(albumId+'VideoPlayer', {}, function(){
+			      // Player (this) is initialized and ready.
+			});
+		}
 	}
 	
 	$.each(list.split('|'), function(i, line) {
@@ -89,7 +97,7 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 			if (suffix == 'm4v' || suffix == 'mp4') {
 				tag = '<video src="' + url
 						+ '" alt="' + line
-						+ '" preload="metadata" loop="loop"/>';
+						+ '" preload="metadata" loop="loop" poster="'+url+'.png"/>';
 			} else if(suffix=='txt' || suffix=='htm' || suffix=='tml'){
 				$.get(url, function(txt) {
 					tag = '<div>' + txt + '</div>';
@@ -103,6 +111,10 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 				var href=url;
 				html=html.replace(/{data-rel}/g, 'rel="external"').replace(/{href}/g, href);
 				html=html.replace(/{events}/g, '');
+			}else if('videos'==albumType){
+				var href='javascript:void(0)';
+				html=html.replace(/{data-rel}/g, '').replace(/{href}/g, href);
+				html=html.replace(/{events}/g, 'onclick="playVideo('+albumId+'VideoPlayer,this);"');
 			}else{
 				var href='#viewer';
 				html=html.replace(/{data-rel}/g, '').replace(/{href}/g, href);
@@ -140,5 +152,10 @@ function u2str(text){
 function showContent(obj) {
 	$('#viewerContent').html($(obj).html());
 	$('#viewerContent img').attr('class','');
-	$('#viewerContent video').attr('controls','controls');
+}
+
+function playVideo(vpId,obj) {
+	var vp = _V_(vpId);
+	vp.src(obj.firstChild.src);
+	vp.play();
 }

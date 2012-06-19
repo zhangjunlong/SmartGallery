@@ -45,11 +45,14 @@ div.sg-toolbar-close div.sg-toolbar-content{background-position: 0 0;}
 #Gallery1 .ui-content, #Gallery2 .ui-content { overflow: hidden; }
 
 #vplayer{cursor: pointer;}
-video { float: center; height: 100%; text-align:center; background:#3c3c3c}
-.videos li div div a video { display: block; width: 100%; height: 200px; text-align:center }
-.videos li { float: center; width: auto; text-align:center}
-.videos li a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
+video { height: 100%; text-align:center; background:#3c3c3c}
+.videos-page div { text-align:center;}
+.videos li a { display: block; margin: 5px;}
 .fullVideo{width:100%;height:auto;}
+.video-js{display:inline-block}
+
+.videos li {float:left;line-height:50px;margin:5px;display:inline;border:0px}
+.videos li a video {height:50px;border:0px};
 
 .albums {float:left;width:100%;text-align:center;display:inline-block}
 .albums a {color:#000;text-decoration:none}
