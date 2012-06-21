@@ -6,6 +6,7 @@
  */
 var si = si ? si : {};
 si.gallery = si.gallery ? si.gallery : new SIGallery();
+si.auth=si.auth ? si.auth : new SIAuth();
 
 function SIGallery() {
 	this.home = 'gallery/';
@@ -159,4 +160,65 @@ function playVideo(vpId,obj) {
 	var vp = _V_(vpId);
 	vp.src(obj.firstChild.src);
 	vp.play();
+}
+
+function SIAuth() {
+	
+}
+SIAuth.prototype.check=function() {
+	$.mobile.showPageLoadingMsg();
+	//localStorage 
+	if(!window.localStorage){ 
+	 	alert("不支持本地存储"); 
+	}
+	var loAuthCode=window.localStorage.getItem("authCode");
+	
+	if(!loAuthCode) {
+		$('#settingsBackBtn').hide();
+		$('#settingsBtn').click();
+	} else {
+		var authDate=window.localStorage.getItem('authDate');
+		if(authDate>getSimpleDate()) {
+			$('#authMsg').html('授权已过期.');
+			$('#settingsBackBtn').hide();
+			$('#settingsBtn').click();
+		} else{
+			$('#authMsg').html('授权有效.(过期时间：'+authDate+')');
+		}
+	}
+};
+SIAuth.prototype.verify=function () {
+	var code = $('#authCodeInput').val();
+	
+	$.get('authorization/'+code.toUpperCase()+'.auth')
+	.success(function (authInfo){
+		authInfo=authInfo.split(':');
+		var authDate=authInfo[1];
+		$('#authMsg').html('授权有效.(过期时间：'+authDate+')');
+		window.localStorage.setItem('authCode',authInfo[0]);
+		window.localStorage.setItem('authDate',authDate);
+		$('#gotoVisitA').show();
+	})
+	.error(function (e){
+		$.mobile.hidePageLoadingMsg();
+		$('#authMsg').html("授权失败，请获得正确的授权再尝试。");
+	});
+};
+SIAuth.prototype.reset=function() {
+	window.localStorage.removeItem('authCode');
+	window.localStorage.removeItem('authDate');
+	$('#authCodeInput').val('');
+	$('#authMsg').html('请重新输入授权码。');
+	$('#gotoVisitA').hide();
+};
+SIAuth.prototype.gotoAuthPage=function() {
+	var loAuthCode=window.localStorage.getItem("authCode");
+	if(loAuthCode) {
+		$('#authCodeInput').val(loAuthCode);
+	}
+	window.location.hash="settingsPage";
+};
+function getSimpleDate() {
+	var date = new Date();
+	return date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate();
 }

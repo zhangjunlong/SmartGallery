@@ -27,7 +27,8 @@
 		 */	
 		(function(window, $, PhotoSwipe){
 			$(document).ready(function(){
-				si.gallery.load();	
+				si.auth.check();
+				si.gallery.load();
 				$('div.gallery-page')
 					.live('pageshow', function(e){						
 						var currentPage = $(e.target),
@@ -59,10 +60,10 @@
 	</script>
 </head>
 <body>
-<div data-role="page" id="Home">
+<div data-role="page" id="home">
 	<div data-role="header" data-position="fixed" data-fullscreen="false">
 		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
-		<!-- <a id="screenModeBtn" href="javascript: toggleScreenMode();" data-icon="check" data-theme="b">全屏</a> -->
+		<a id="settingsBtn" href="javascript: si.auth.gotoAuthPage();" data-icon="gear" data-theme="b">设置</a>
 	</div>
 	<div data-role="content" >
 		<hr/>
@@ -116,6 +117,18 @@
 </div>
 <div id="videoPlayerTemplate" class="template">
 		<video id="{vpTemplateId}" class="video-js vjs-default-skin" controls preload="auto" loop width="640" height="264" ></video>
+</div>
+<div id="settingsPage" data-role="dialog">
+	<div data-role="content" style="text-align:center;">
+		<div id="authMsg">请输入设备授权码获得授权</div>
+		<input id="authCodeInput" placeholder="请输入设备授权码">
+		<button onclick="si.auth.verify();">验证</button>
+		<button onclick="si.auth.reset();" data-theme="e">重置</button>
+		<a id="gotoVisitA" href="#home" style="display:none">继续访问</a>
+	</div>
+	<div data-role="footer">
+		<h4>&copy; 2012 DGVI</h4>
+	</div>
 </div>
 </body>
 </html>

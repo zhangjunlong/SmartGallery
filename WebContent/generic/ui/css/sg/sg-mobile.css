@@ -51,8 +51,9 @@ video { height: 100%; text-align:center; background:#3c3c3c}
 .fullVideo{width:100%;height:auto;}
 .video-js{display:inline-block}
 
-.videos li {float:left;line-height:50px;margin:5px;display:inline;border:0px}
-.videos li a video {height:50px;border:0px};
+ul {display:inline-block; margin:0 auto;width:768px;text-align:center;}
+.videos li {margin:0px;float:left;line-height:80px;display:inline;border:0px}
+.videos li a video {width:230px;height:80px;border:0px};
 
 .albums {float:left;width:100%;text-align:center;display:inline-block}
 .albums a {color:#000;text-decoration:none}
