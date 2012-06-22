@@ -51,7 +51,7 @@ video { height: 100%; text-align:center; background:#3c3c3c}
 .fullVideo{width:100%;height:auto;}
 .video-js{display:inline-block}
 
-ul {display:inline-block; margin:0 auto;width:768px;text-align:center;}
+.videos {display:inline-block; margin:0 auto;width:768px;text-align:center;}
 .videos li {margin:0px;float:left;line-height:80px;display:inline;border:0px}
 .videos li a video {width:230px;height:80px;border:0px};
 
