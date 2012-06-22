@@ -174,51 +174,77 @@ SIAuth.prototype.check=function() {
 	var loAuthCode=window.localStorage.getItem("authCode");
 	
 	if(!loAuthCode) {
-		$('#settingsBackBtn').hide();
-		$('#settingsBtn').click();
+		$('#gotoVisitAnchor').hide();
+		window.location.hash="settingsPage";
 	} else {
-		var authDate=window.localStorage.getItem('authDate');
-		if(authDate>getSimpleDate()) {
-			$('#authMsg').html('授权已过期.');
-			$('#settingsBackBtn').hide();
-			$('#settingsBtn').click();
+		var authDate=window.localStorage.getItem('authDate');	
+		if(getSimpleDate()>authDate) {
+			$('#authMsg').html('授权已过期');
+			$('#gotoVisitAnchor').hide();
+			window.location.hash="settingsPage";
 		} else{
-			$('#authMsg').html('授权有效.(过期时间：'+authDate+')');
+			$('#authMsg').html('授权有效（过期时间：'+authDate+'）');
 		}
 	}
 };
 SIAuth.prototype.verify=function () {
-	var code = $('#authCodeInput').val();
+	var code = $.trim($('#authCodeInput').val());
+	window.localStorage.removeItem('authCode');
+	window.localStorage.removeItem('authDate');
 	
-	$.get('authorization/'+code.toUpperCase()+'.auth')
+	$.get('authorization/'+code.toUpperCase()+'.auth?'+new Date())
 	.success(function (authInfo){
 		authInfo=authInfo.split(':');
 		var authDate=authInfo[1];
-		$('#authMsg').html('授权有效.(过期时间：'+authDate+')');
-		window.localStorage.setItem('authCode',authInfo[0]);
-		window.localStorage.setItem('authDate',authDate);
-		$('#gotoVisitA').show();
+		
+		if(getSimpleDate()>authDate) {
+			$('#authMsg').html('授权已过期（过期时间：'+authDate+'）');
+			$('#gotoVisitAnchor').hide();
+		} else {
+			$('#authMsg').html('授权有效（过期时间：'+authDate+'）');
+			window.localStorage.setItem('authCode',code);
+			window.localStorage.setItem('authDate',authDate);
+			$('#gotoVisitAnchor').show();
+		}
 	})
 	.error(function (e){
 		$.mobile.hidePageLoadingMsg();
-		$('#authMsg').html("授权失败，请获得正确的授权再尝试。");
+		$('#authMsg').html("授权失败，请获得有效的授权再尝试");
 	});
 };
 SIAuth.prototype.reset=function() {
-	window.localStorage.removeItem('authCode');
-	window.localStorage.removeItem('authDate');
-	$('#authCodeInput').val('');
-	$('#authMsg').html('请重新输入授权码。');
-	$('#gotoVisitA').hide();
+	if(confirm('重置后您将需要重新进行授权才能访问内容，确定进行重置授权吗？')){
+		window.localStorage.removeItem('authCode');
+		window.localStorage.removeItem('authDate');
+		$('#authCodeInput').val('');
+		$('#authMsg').html('请重新输入授权码');
+		$('#gotoVisitAnchor').hide();
+	}
 };
 SIAuth.prototype.gotoAuthPage=function() {
 	var loAuthCode=window.localStorage.getItem("authCode");
 	if(loAuthCode) {
 		$('#authCodeInput').val(loAuthCode);
+		var authDate=window.localStorage.getItem('authDate');
+		if(getSimpleDate()>authDate) {
+			$('#authMsg').html('授权已过期');
+			$('#gotoVisitAnchor').hide();
+		} else{
+			$('#authMsg').html('授权有效（过期时间：'+authDate+'）');
+			$('#gotoVisitAnchor').show();
+		}
 	}
 	window.location.hash="settingsPage";
 };
 function getSimpleDate() {
-	var date = new Date();
-	return date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate();
+	var cdate = new Date();
+	var month = cdate.getMonth()+1;
+	var date = cdate.getDate();
+	if(month<10){
+		month='0'+month;
+	}
+	if(date<10){
+		date='0'+date;
+	}
+	return cdate.getFullYear()+'/'+month+'/'+date;
 }
