@@ -8,13 +8,15 @@ Smart Gallery | 智能媒体展示库
 
 使用说明
 1.安装与部署
-解压缩SmartGallery.zip到WEB服务器的根目录，启动WEB服务器；
-尝试在浏览器中访问http://localhost/SmartGallery，正常常情况下可显示预置的图片库。
-用户可以根据需要更改发布目录，复制SmartGallery内所有内容至需要发布的目录即可。
+复制WebContent下所有文件内容到WEB服务器的根目录，启动WEB服务器；
+尝试在浏览器中访问http://localhost/index.html，正常常情况下可显示预置的图片库。
+用户可以根据需要更改发布目录，复制所有文件内容至需要发布的目录即可。
+比如可以在WEB服务器中新建SmartGallery，复制WebContent下内容至SmartGallery目录，
+访问地址则相应地改为http://localhost/SmartGallery/index.html。
 
 2.定义媒体库和添加内容
 a. 定义媒体库
-进入SmartGallery/gallery目录，用文本编辑器打开该目录下的layout.properties文件。
+进入gallery目录，用文本编辑器打开该目录下的layout.properties文件。
 默认情况下可以看到以下内容：
 	## Gallery Layout/ Albums list here
 	new_arrival:新品上市:gallery
