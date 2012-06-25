@@ -63,7 +63,6 @@ SIGallery.prototype.createAlbums = function(albumsArray) {
 			var gPage=pTemplate.replace(/{id}/g, id).replace(/{type}/g, type);
 			$('body').append(gPage);
 			$('#'+id+'Title').html(name);
-			
 		}
 	});
 };
@@ -85,6 +84,15 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 			      // Player (this) is initialized and ready.
 			});
 		}
+	} else if('gallery'== albumType) {
+		$(document).delegate('#'+albumId+'Page', 'pageinit', function() {
+		    //notice I start the selection with the current page,
+		    //this way you only run the code on images on this pseudo-page
+			var option={
+			    effect : "fadeIn"
+			};
+		    $(this).find("img.lazy").lazyload(option);
+		});
 	}
 	
 	$.each(list.split('|'), function(i, line) {
@@ -96,7 +104,7 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 			var tag='';
 			
 			if (suffix == 'm4v' || suffix == 'mp4') {
-				tag = '<video src="' + url
+				tag = '<video preload="none" src="' + url
 						+ '" alt="' + line
 						+ '" poster="'+url+'.png"/>';
 			} else if(suffix=='txt' || suffix=='htm' || suffix=='tml'){
@@ -104,7 +112,7 @@ SIGallery.prototype.createAlbumPage=function (album,list) {
 					tag = '<div>' + txt + '</div>';
 				});
 			} else {
-				tag = '<img src="' + url + '" alt="' + line + '" />';
+				tag = '<img class="lazy" src="generic/images/grey.gif" data-original="' + url + '" alt="' + line + '" />';
 			}
 			
 			var html='<li><a href="{href}" {data-rel} {events}">'+tag+'</a></li>';
@@ -221,7 +229,7 @@ SIAuth.prototype.reset=function() {
 		$('#gotoVisitAnchor').hide();
 	}
 };
-SIAuth.prototype.gotoAuthPage=function() {
+SIAuth.prototype.initAuthPage=function() {
 	var loAuthCode=window.localStorage.getItem("authCode");
 	if(loAuthCode) {
 		$('#authCodeInput').val(loAuthCode);
@@ -234,7 +242,6 @@ SIAuth.prototype.gotoAuthPage=function() {
 			$('#gotoVisitAnchor').show();
 		}
 	}
-	window.location.hash="settingsPage";
 };
 function getSimpleDate() {
 	var cdate = new Date();

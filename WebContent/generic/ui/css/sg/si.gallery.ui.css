@@ -39,9 +39,9 @@ div.sg-toolbar-close div.sg-toolbar-content{background-position: 0 0;}
 
 .gallery { list-style: none; padding: 0; margin: 0; }
 .gallery:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
-.gallery li { float: left; width: 33.33333333%; }
-.gallery li a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
-.gallery li img { display: block; width: 100%; height: auto; }
+.gallery li { float: left; width: 25%; }
+.gallery li a { display: block; margin: 5px; border: 1px solid silver; }
+.gallery li img { display: block; width: 100%; height: auto;}
 #Gallery1 .ui-content, #Gallery2 .ui-content { overflow: hidden; }
 
 #vplayer{cursor: pointer;}
@@ -87,6 +87,10 @@ video { height: 100%; text-align:center; background:#3c3c3c}
 	margin:0px;
 }
 
+/**special sytels**/
+.template{display:none}
+#gTemplate{display:none}
+#pTemplate{display:none}
 /** override styles **/
 body {font-size: x-large}
 pre {font-size: large}
@@ -105,8 +109,3 @@ padding: 10px 25px 10px 40px;
 
 div.ps-toolbar{font-size:24px;height:88px}
 div.ps-caption{font-size:24px;}
-
-/**special sytels**/
-.template{display:none}
-#gTemplate{display:none}
-#pTemplate{display:none}

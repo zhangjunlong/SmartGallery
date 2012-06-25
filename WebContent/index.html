@@ -4,16 +4,17 @@
 	<meta charset="UTF-8">
 	<title>灵动&trade;智能移动图库 | Smart Gallery&trade;</title>
 	<meta name="author" content="Zhang Junlong - Smart Interative - http://smartgallery.cloudfoundry.com/" />
-	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	
 	<link href="generic/ui/css/jquery.mobile/jquery.mobile.css" rel="stylesheet" />
 	<link href="PhotoSwipe/photoswipe.css" type="text/css" rel="stylesheet" />
-	<link href="generic/ui/css/sg/sg-mobile.css" type="text/css" rel="stylesheet" />
+	<link href="generic/ui/css/sg/si.gallery.ui.css" type="text/css" rel="stylesheet" />
 	<link href="generic/ui/css/sg/video-js.css" type="text/css" rel="stylesheet" />
 	
 	<script type="text/javascript" src="generic/js/video.js"></script>
 	<script type="text/javascript" src="generic/js/jquery.js"></script>
+	<script type="text/javascript" src="generic/js/jquery.lazyload.js"></script>
 	<script type="text/javascript" src="generic/js/si.gallery.js"></script>
 	<script type="text/javascript" src="generic/ui/js/jquery.mobile.js"></script>
 	<script type="text/javascript" src="PhotoSwipe/lib/klass.min.js"></script>
@@ -27,7 +28,11 @@
 		 */	
 		(function(window, $, PhotoSwipe){
 			$(document).ready(function(){
+				$(document).delegate('#settingsPage', 'pageinit', function() {
+					si.auth.initAuthPage();
+				});
 				si.auth.check();
+				
 				si.gallery.load();
 				$('div.gallery-page')
 					.live('pageshow', function(e){						
@@ -62,8 +67,8 @@
 <body>
 <div data-role="page" id="home">
 	<div data-role="header" data-position="fixed" data-fullscreen="false">
-		<h1>Smart Gallery&trade; | <em>灵动&trade;</em>智能图片库</h1>
-		<a id="settingsBtn" href="javascript: si.auth.gotoAuthPage();" data-icon="gear" data-theme="b">设置</a>
+		<h1>Smart Gallery&trade; | 智能图库</h1>
+		<a id="settingsBtn" href="#settingsPage" data-icon="gear" data-theme="a">设置</a>
 	</div>
 	<div data-role="content" >
 		<hr/>
@@ -71,7 +76,7 @@
 			<div id="gTemplate">
 				<a href="#{id}Page" data-transition="fade">
 					<div class="album">
-						<img id="{id}Thumb" src="generic/images/no_image.gif">
+						<img id="{id}Thumb" src="generic/images/grey.gif">
 						<h3 id="{id}Name">新品上市</h3>
 					</div>
 				</a>
@@ -124,7 +129,7 @@
 		<input id="authCodeInput" placeholder="请输入设备授权码">
 		<button onclick="si.auth.verify();">验证</button>
 		<button onclick="si.auth.reset();" data-theme="e">重置</button>
-		<a id="gotoVisitAnchor" href="#home" style="display:none">继续访问</a>
+		<a id="gotoVisitAnchor" href="#home" style="display:none" data-role="button" data-theme="b">继续访问</a>
 	</div>
 	<div data-role="footer">
 		<h4>&copy; 2012 DGVI</h4>
